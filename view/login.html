@@ -29,7 +29,7 @@
                             <div class="item-inner row">
                                 <div class="item-title label">手机</div>
                                 <div class="item-input">
-                                    <input type="text" name="handset" placeholder="">
+                                    <input id="handset" type="text" name="handset" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">密码</div>
                                 <div class="item-input">
-                                    <input type="password" placeholder="" name="password">
+                                    <input id="password" type="password" placeholder="" name="password">
                                 </div>
                             </div>
                         </div>
@@ -49,8 +49,12 @@
             </div>
             <div class="content-block">
                 <div class="row">
-                    <div class="col-50"><a href="#" class="button button-big button-fill button-warning">忘记密码</a></div>
-                    <div class="col-50"><a href="#" class="button button-big button-fill button-success">登录</a></div>
+                    <div class="col-50">
+                        <a href="#" class="button button-big button-fill button-warning">忘记密码</a>
+                    </div>
+                    <div class="col-50">
+                        <a href="#" class="login button button-big button-fill button-success">登录</a>
+                    </div>
                 </div>
             </div>
             <div class="content-block">
@@ -65,5 +69,32 @@
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+
+<script type="text/javascript">
+    $(function () {
+        $(document).on('click', '.login', function () {
+            var handset = $("#handset").val()
+            var password = $("#password").val()
+
+            if (!handset.length) {
+                $.alert("手机号码不能为空")
+                return
+            } else if (!password.length) {
+                $.alert("密码不能为空")
+                return
+            }
+
+            var reg = /^1[0-9]{10}$/
+            if (!reg.test(handset)) {
+                $.alert("手机号码无效")
+                return
+            } else if (password.length < 8) {
+                $.alert("密码不能小于八位")
+                return
+            }
+
+        })
+    })
+</script>
 </body>
 </html>
