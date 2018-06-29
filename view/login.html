@@ -22,7 +22,6 @@
         <div class="content">
             <div class="list-block">
                 <ul>
-                    <!-- Text inputs -->
                     <li>
                         <div class="item-content">
                             <div class="item-media"></div>
@@ -73,6 +72,7 @@
 
 <script type="text/javascript">
     $(function () {
+        // 登录
         $(document).on('click', '.login', function () {
             var handset = $("#handset").val()
             var password = $("#password").val()
@@ -94,6 +94,27 @@
                 return
             }
 
+            $.ajax({
+                type: "POST",
+                url: BASE_RUL + "/account/login",
+                data: {
+                    "handset": handset,
+                    "password": password
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data)
+                },
+                error: function (xhr) {
+                    res = xhr.responseText
+                    data = JSON.parse(res)
+                    $.alert(data.msg)
+                }
+            })
+        })
+
+        // 忘记密码
+        $(document).on('click', '.forget-password', function () {
         })
     })
 </script>
