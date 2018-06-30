@@ -160,10 +160,10 @@
                         return
                     }
 
+
                     $.toast("注册成功")
-                    if (sleep(2000)) {
-                        window.location.href = "/view/personal.html"
-                    }
+                    go('/view/personal.html')
+                    return
                 },
                 error: function (xhr) {
                     res = xhr.responseText

@@ -18,3 +18,16 @@ function sleep(numberMillis) {
     }
 }
 
+/**
+ * 等待一段时间后跳转
+ * @param url
+ * @param timeout
+ */
+function go(url, timeout) {
+    if (!timeout) {
+        timeout = 2000
+    }
+
+    setTimeout("location.href='" + url + "'", timeout);
+}
+
