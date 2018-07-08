@@ -16,12 +16,10 @@
 <body>
 <div class="page-group">
     <div class="page page-current">
-        <!-- 标题栏 -->
         <header class="bar bar-nav">
             <h1 class="title">首页</h1>
         </header>
 
-        <!-- 工具栏 -->
         <nav class="bar bar-tab">
             <a class="tab-item external active" href="#">
                 <span class="icon icon-home"></span>
@@ -34,9 +32,68 @@
             </a>
         </nav>
 
-        <!-- 这里是页面内容区 -->
         <div class="content">
-            <div class="content-block"></div>
+            <div class="buttons-tab">
+                <a href="#star-tab" class="tab-link button">收藏</a>
+                <a href="#huobi-tab" class="tab-link active button">火币网</a>
+                <a href="#dragonex-tab" class="tab-link button">龙交所</a>
+            </div>
+
+            <div class="content-block">
+                <div class="tabs">
+                    <div id="star-tab" class="tab"></div>
+
+                    <div id="huobi-tab" class="tab active">
+                        <div class="content-block">
+                            <div class="buttons-row">
+                                <a href="#huobi-usdt-tab" class="tab-link button active">USDT</a>
+                                <a href="#huobi-btc-tab" class="tab-link button">BTC</a>
+                                <a href="#huobi-eth-tab" class="tab-link button">ETH</a>
+                            </div>
+                            <div class="tabs">
+                                <div id="huobi-usdt-tab" class="tab active"></div>
+                                <div id="huobi-btc-tab" class="tab"></div>
+                                <div id="huobi-eth-tab" class="tab"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="dragonex-tab" class="tab">
+                        <div class="content-block">
+                            <div class="buttons-row">
+                                <a href="#dragonex-usdt-tab" class="tab-link button active">USDT</a>
+                                <a href="#dragonex-btc-tab" class="tab-link button">BTC</a>
+                                <a href="#dragonex-eth-tab" class="tab-link button">ETH</a>
+                            </div>
+                            <div class="tabs">
+                                <div id="dragonex-usdt-tab" class="tab active"></div>
+                                <div id="dragonex-btc-tab" class="tab"></div>
+                                <div id="dragonex-eth-tab" class="tab"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-block">
+                <ul>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">btc/usdt</div>
+                            <div class="item-after">8989.02</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">eth/usdt</div>
+                            <div class="item-after">4512.231</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </div>
