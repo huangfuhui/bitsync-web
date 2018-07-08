@@ -103,6 +103,5 @@ function market() {
     con.onerror = function () {
         console.log("发生错误");
         con.close();
-        $.toast("发生了一些错误");
     };
 }
