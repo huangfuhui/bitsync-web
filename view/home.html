@@ -11,12 +11,16 @@
 
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
-
+    <link rel="stylesheet" href="/static/css/bitsync.css">
 </head>
 <body>
 <div class="page-group">
     <div class="page page-current">
         <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left external" href="/view/home.html">
+                <span class="icon icon-refresh"></span>
+                刷新
+            </a>
             <h1 class="title">首页</h1>
         </header>
 
@@ -39,61 +43,47 @@
                 <a href="#dragonex-tab" class="tab-link button">龙交所</a>
             </div>
 
-            <div class="content-block">
-                <div class="tabs">
-                    <div id="star-tab" class="tab"></div>
+            <div class="tabs">
+                <div id="star-tab" class="tab"></div>
 
-                    <div id="huobi-tab" class="tab active">
-                        <div class="content-block">
-                            <div class="buttons-row">
-                                <a href="#huobi-usdt-tab" class="tab-link button active">USDT</a>
-                                <a href="#huobi-btc-tab" class="tab-link button">BTC</a>
-                                <a href="#huobi-eth-tab" class="tab-link button">ETH</a>
-                            </div>
-                            <div class="tabs">
-                                <div id="huobi-usdt-tab" class="tab active"></div>
-                                <div id="huobi-btc-tab" class="tab"></div>
-                                <div id="huobi-eth-tab" class="tab"></div>
-                            </div>
+                <div id="huobi-tab" class="tab active">
+                    <div class="content-block">
+                        <div class="buttons-row">
+                            <a href="#huobi-usdt-tab" class="tab-link button active">USDT</a>
+                            <a href="#huobi-btc-tab" class="tab-link button">BTC</a>
+                            <a href="#huobi-eth-tab" class="tab-link button">ETH</a>
                         </div>
                     </div>
+                    <div class="list-block tabs">
+                        <div id="huobi-usdt-tab" class="tab active">
+                            <ul id="huobi-usdt-market-list"></ul>
+                        </div>
+                        <div id="huobi-btc-tab" class="tab wait-update-tips">
+                            <p>敬请期待</p>
+                        </div>
+                        <div id="huobi-eth-tab" class="tab wait-update-tips">
+                            <p>敬请期待</p>
+                        </div>
+                    </div>
+                </div>
 
-                    <div id="dragonex-tab" class="tab">
-                        <div class="content-block">
-                            <div class="buttons-row">
-                                <a href="#dragonex-usdt-tab" class="tab-link button active">USDT</a>
-                                <a href="#dragonex-btc-tab" class="tab-link button">BTC</a>
-                                <a href="#dragonex-eth-tab" class="tab-link button">ETH</a>
-                            </div>
-                            <div class="tabs">
-                                <div id="dragonex-usdt-tab" class="tab active"></div>
-                                <div id="dragonex-btc-tab" class="tab"></div>
-                                <div id="dragonex-eth-tab" class="tab"></div>
-                            </div>
+                <div id="dragonex-tab" class="tab">
+                    <div class="content-block">
+                        <div class="buttons-row">
+                            <a href="#dragonex-usdt-tab" class="tab-link button active">USDT</a>
+                            <a href="#dragonex-eth-tab" class="tab-link button">ETH</a>
+                        </div>
+                    </div>
+                    <div class="list-block tabs">
+                        <div id="dragonex-usdt-tab" class="tab active">
+                            <ul id="dragonex-usdt-market-list"></ul>
+                        </div>
+                        <div id="dragonex-eth-tab" class="tab wait-update-tips">
+                            <p>敬请期待</p>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="list-block">
-                <ul>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">btc/usdt</div>
-                            <div class="item-after">8989.02</div>
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">eth/usdt</div>
-                            <div class="item-after">4512.231</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
         </div>
     </div>
 </div>
@@ -101,5 +91,10 @@
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/bitsync.js' charset='utf-8'></script>
+
+<script type="text/javascript">
+    window.onload = market
+</script>
 </body>
 </html>
