@@ -9,9 +9,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+    <script src="/static/js/iconfont.js"></script>
+
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <link rel="stylesheet" href="/static/css/bitsync.css">
+
+    <style type="text/css">
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 <div class="page-group">
@@ -22,13 +34,19 @@
 
         <nav class="bar bar-tab">
             <a class="tab-item external" href="/view/home.html">
-                <span class="icon icon-home"></span>
+                <svg class="icon" aria-hidden="true" style="width: 1.3em;height: 1.3em;">
+                    <use xlink:href="#icon-combo_chart"></use>
+                </svg>
             </a>
             <a class="tab-item external active" href="#">
-                <span class="icon icon-clock"></span>
+                <svg class="icon" aria-hidden="true" style="width: 1.3em;height: 1.3em;">
+                    <use xlink:href="#icon-clock"></use>
+                </svg>
             </a>
             <a class="tab-item external" href="/view/account.html">
-                <span class="icon icon-me"></span>
+                <svg class="icon" aria-hidden="true" style="width: 1.3em;height: 1.3em;">
+                    <use xlink:href="#icon-settings"></use>
+                </svg>
             </a>
         </nav>
 
