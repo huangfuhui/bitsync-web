@@ -122,10 +122,10 @@
         }
 
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: BASE_RUL + "/member/get",
             headers: {
-                token: token
+                Token: token
             },
             data: {},
             dataType: "json",
