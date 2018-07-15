@@ -54,8 +54,8 @@
         <div class="content">
             <div class="content-padded">
                 <div>
-                    <h4>你好呀, bs13710000000</h4>
-                    <h6>UID:123456</h6>
+                    <h4 id="user-name">你好呀, ^_^!</h4>
+                    <h6 id="user-uid">UID:88888</h6>
                 </div>
             </div>
             <div class="list-block">
@@ -109,5 +109,43 @@
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/js/bitsync.js' charset='utf-8'></script>
+
+<script type="text/javascript">
+    window.onload = function () {
+        let token = localStorage.getItem("token");
+
+        if (!token.length) {
+            $.alert("登录失效，请重新登录")
+            go("/view/login.html", 500);
+            return
+        }
+
+        $.ajax({
+            type: "POST",
+            url: BASE_RUL + "/member/get",
+            headers: {
+                token: token
+            },
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                let code = data["code"];
+                if (code != 200) {
+                    $.alert(data["msg"]);
+                    return
+                }
+
+                $("#user-name").html(data.response.name);
+                $("#user-uid").html("UID:" + data.response.uid);
+            },
+            error: function (xhr) {
+                let res = xhr.responseText;
+                let data = JSON.parse(res);
+                $.alert(data.msg)
+            }
+        })
+    }
+</script>
 </body>
 </html>

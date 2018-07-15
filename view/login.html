@@ -169,8 +169,8 @@
                     }
                 },
                 error: function (xhr) {
-                    res = xhr.responseText;
-                    data = JSON.parse(res);
+                    let res = xhr.responseText;
+                    let data = JSON.parse(res);
                     $.alert(data.msg)
                 }
             })
