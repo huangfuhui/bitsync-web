@@ -104,7 +104,11 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    $.toast("获取验证码成功")
+                    if (code != 200) {
+                        $.alert(data.msg)
+                    } else {
+                        $.toast("获取验证码成功")
+                    }
                 },
                 error: function (xhr) {
                     res = xhr.responseText

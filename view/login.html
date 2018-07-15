@@ -114,7 +114,7 @@
             <div class="content-block">
                 <div class="row">
                     <div class="col-100"><a href="#"
-                                            class="register button button-big button-fill button-success">提交</a>
+                                            class="forget-password button button-big button-fill button-success">提交</a>
                     </div>
                 </div>
             </div>
@@ -176,8 +176,98 @@
             })
         });
 
+        // 获取验证码
+        $(document).on("click", ".get-pin", function () {
+            let handset = $("#reset-handset").val();
+
+            if (!handset.length) {
+                $.alert("手机号码不能为空");
+                return
+            }
+
+            let reg = /^1[0-9]{10}$/;
+            if (!reg.test(handset)) {
+                $.alert("手机号码无效");
+                return
+            } else if (password.length < 8) {
+                $.alert("密码不能小于八位");
+                return
+            }
+
+            $.ajax({
+                type: "POST",
+                url: BASE_RUL + "/account/passwordPin",
+                data: {
+                    "handset": handset,
+                },
+                dataType: "json",
+                success: function (data) {
+                    let code = data.code;
+                    if (code != 200) {
+                        $.alert(data.msg)
+                    } else {
+                        $.toast("获取验证码成功")
+                    }
+                },
+                error: function (xhr) {
+                    res = xhr.responseText;
+                    data = JSON.parse(res);
+                    $.alert(data.msg)
+                }
+            })
+        });
+
         // 忘记密码
         $(document).on('click', '.forget-password', function () {
+            let handset = $("#reset-handset").val();
+            let pin = $("#reset-pin").val();
+            let password = $("#reset-password").val();
+
+            if (!handset.length) {
+                $.alert("手机号码不能为空");
+                return
+            } else if (!password.length) {
+                $.alert("密码不能为空");
+                return
+            } else if (!pin.length) {
+                $.alert("验证码不能为空");
+                return
+            }
+
+            let reg = /^1[0-9]{10}$/;
+            if (!reg.test(handset)) {
+                $.alert("手机号码无效");
+                return
+            } else if (password.length < 8) {
+                $.alert("密码不能小于八位");
+                return
+            }
+
+            $.ajax({
+                type: "POST",
+                url: BASE_RUL + "/account/resetPassword",
+                data: {
+                    "handset": handset,
+                    "pin": pin,
+                    "new_pwd": password
+                },
+                dataType: "json",
+                success: function (data) {
+                    let code = data["code"];
+                    if (code != 200) {
+                        $.alert(data["msg"]);
+                        return
+                    }
+
+                    $.toast("重置密码成功");
+                    go('/view/login.html', 1000);
+                },
+                error: function (xhr) {
+                    res = xhr.responseText;
+                    data = JSON.parse(res);
+                    $.alert(data.msg)
+                }
+            })
         })
     })
 </script>
