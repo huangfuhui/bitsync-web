@@ -2,7 +2,7 @@
  * 基础js文件
  */
 
-const BASE_RUL = "http://localhost:8090";
+const BASE_RUL = "http://localhost:8080";
 const WS_URL = "ws://localhost:8088/market";
 
 var priceArr = [];

@@ -113,7 +113,8 @@
             </div>
             <div class="content-block">
                 <div class="row">
-                    <div class="col-100"><a href="#" class="register button button-big button-fill button-success">提交</a>
+                    <div class="col-100"><a href="#"
+                                            class="register button button-big button-fill button-success">提交</a>
                     </div>
                 </div>
             </div>
@@ -130,23 +131,23 @@
     $(function () {
         // 登录
         $(document).on('click', '.login', function () {
-            var handset = $("#handset").val()
-            var password = $("#password").val()
+            let handset = $("#handset").val();
+            let password = $("#password").val();
 
             if (!handset.length) {
-                $.alert("手机号码不能为空")
+                $.alert("手机号码不能为空");
                 return
             } else if (!password.length) {
-                $.alert("密码不能为空")
+                $.alert("密码不能为空");
                 return
             }
 
-            var reg = /^1[0-9]{10}$/
+            let reg = /^1[0-9]{10}$/;
             if (!reg.test(handset)) {
-                $.alert("手机号码无效")
+                $.alert("手机号码无效");
                 return
             } else if (password.length < 8) {
-                $.alert("密码不能小于八位")
+                $.alert("密码不能小于八位");
                 return
             }
 
@@ -159,15 +160,21 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
+                    let code = data.code;
+                    if (code != 200) {
+                        $.alert(data.msg)
+                    } else {
+                        localStorage.setItem("token", data.response.token);
+                        window.location.href = "/view/star.html";
+                    }
                 },
                 error: function (xhr) {
-                    res = xhr.responseText
-                    data = JSON.parse(res)
+                    res = xhr.responseText;
+                    data = JSON.parse(res);
                     $.alert(data.msg)
                 }
             })
-        })
+        });
 
         // 忘记密码
         $(document).on('click', '.forget-password', function () {
