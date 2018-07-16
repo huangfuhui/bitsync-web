@@ -163,7 +163,7 @@
         let token = localStorage.getItem("token");
 
         if (!token) {
-            $.toast("登录失效，请重新登录");
+            $.toast("请先登录");
             go("/view/login.html", 800);
             return
         }
@@ -211,7 +211,7 @@
                 let data = JSON.parse(res);
 
                 if (data.code == -400) {
-                    $.toast("登录失效，请重新登录");
+                    $.toast("登录失效，重新登录");
                     go("/view/login.html", 800);
                 } else {
                     $.toast(data.msg);

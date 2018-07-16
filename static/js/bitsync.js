@@ -63,11 +63,11 @@ function market() {
                 let symbol = detail.symbol.replace("/", "-");
 
                 if (detail.exchange_id == 1) {
-                    let html = '<li class="item-content"><div class="item-media"><i class="icon"></i></div><div class="item-inner"><div class="item-title">' + detail.symbol + '</div><div id ="' + "huobi-" + symbol + '" class="item-after">' + detail.price + '</div></div></li>';
+                    let html = '<li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title">' + detail.symbol + '</div><div id ="' + "huobi-" + symbol + '" class="item-after">' + detail.price + '</div></div></li>';
                     priceArr["huobi-" + symbol] = detail.price;
                     $("#huobi-usdt-market-list").append(html);
                 } else if (detail.exchange_id == 2) {
-                    let html = '<li class="item-content"><div class="item-media"><i class="icon"></i></div><div class="item-inner"><div class="item-title">' + detail.symbol + '</div><div id ="' + "dragonex-" + symbol + '" class="item-after">' + detail.price + '</div></div></li>';
+                    let html = '<li class="item-content"><div class="item-media"></div><div class="item-inner"><div class="item-title">' + detail.symbol + '</div><div id ="' + "dragonex-" + symbol + '" class="item-after">' + detail.price + '</div></div></li>';
                     priceArr["dragonex-" + symbol] = detail.price;
                     $("#dragonex-usdt-market-list").append(html);
                 }
