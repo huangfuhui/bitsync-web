@@ -28,7 +28,7 @@
 <div class="page-group">
     <div class="page page-current" id="page-personal">
         <header class="bar bar-nav">
-            <a class="button button-link button-nav pull-left" href="/view/account.html">
+            <a class="button button-link button-nav pull-left external" href="/view/account.html">
                 <svg class="icon" aria-hidden="true" style="width: 1.3em;height: 1.3em;">
                     <use xlink:href="#icon-previous"></use>
                 </svg>
@@ -95,7 +95,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">昵称</div>
                                 <div class="item-input">
-                                    <input type="text" id="account" name="account" placeholder="">
+                                    <input type="text" id="modify-name" name="account" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">邮箱</div>
                                 <div class="item-input">
-                                    <input type="text" id="email" name="email" placeholder="">
+                                    <input type="text" id="modify-email" name="email" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">性别</div>
                                 <div class="item-input">
-                                    <input type="password" id="sex" name="sex" placeholder="">
+                                    <input type="text" id="modify-sex" name="sex" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">生日</div>
                                 <div class="item-input">
-                                    <input type="password" id="birthday" name="birthday" placeholder="">
+                                    <input type="text" id="modify-birthday" name="birthday" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -137,7 +137,8 @@
             </div>
             <div class="content-block">
                 <div class="row">
-                    <div class="col-100"><a href="#" class="button button-big button-fill button-success">保存</a>
+                    <div class="col-100"><a href="#"
+                                            class="save-modify button button-big button-fill button-success">保存</a>
                     </div>
                 </div>
             </div>
@@ -152,6 +153,12 @@
 
 
 <script type="text/javascript">
+    let userName = "";
+    let userHandset = "";
+    let userEmail = "";
+    let userSex = "";
+    let userBirthday = "";
+
     window.onload = function () {
         let token = localStorage.getItem("token");
 
@@ -176,11 +183,28 @@
                     return
                 }
 
-                $("#user-name").html(data.response.name);
-                $("#user-handset").html(data.response.handset);
-                $("#user-email").html(data.response.email);
-                $("#user-sex").html(data.response.sex);
-                $("#user-birthday").html(data.response.birthday);
+                userName = data.response.name;
+                userHandset = data.response.handset;
+                userEmail = data.response.email;
+                userSex = data.response.sex;
+                userBirthday = data.response.birthday;
+
+                $("#user-name").html(userName);
+                $("#user-handset").html(userHandset);
+                $("#user-email").html(userEmail);
+                $("#user-birthday").html(userBirthday);
+
+                $("#modify-name").val(userName);
+                $("#modify-email").val(userEmail);
+                $("#modify-birthday").val(userBirthday);
+
+                if (userSex == 1) {
+                    $("#user-sex").html("男");
+                    $("#modify-sex").val("男");
+                } else {
+                    $("#user-sex").html("女");
+                    $("#modify-sex").val("女");
+                }
             },
             error: function (xhr) {
                 let res = xhr.responseText;
@@ -194,7 +218,68 @@
                 }
             }
         })
-    }
+    };
+
+    // 生日选择
+    $("#modify-birthday").calendar({
+        dateFormat: 'yyyy-mm-dd'
+    });
+
+    // 性别选择
+    $("#modify-sex").picker({
+        toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">性别</h1>\
+  </header>',
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['男', '女']
+            }
+        ]
+    });
+
+    $(document).on("click", ".save-modify", function () {
+        let name = $("#modify-name").val();
+        let email = $("#modify-email").val();
+        let sex = $("#modify-sex").val();
+        let birthday = $("#modify-birthday").val();
+
+        if (sex == "男") {
+            sex = 1;
+        } else {
+            sex = 0;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: BASE_RUL + "/member/update",
+            headers: {
+                Token: localStorage.getItem("token")
+            },
+            data: {
+                "name": name,
+                "email": email,
+                "sex": sex,
+                "birthday": birthday
+            },
+            dataType: "json",
+            success: function (data) {
+                let code = data.code;
+                if (code != 200) {
+                    $.toast(data.msg)
+                } else {
+                    $.toast("修改成功");
+                    go("/view/personal.html", 1000)
+                }
+            },
+            error: function (xhr) {
+                res = xhr.responseText;
+                data = JSON.parse(res);
+                $.toast(data.msg)
+            }
+        })
+    });
 </script>
 </body>
 </html>
