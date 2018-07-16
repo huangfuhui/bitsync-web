@@ -132,7 +132,7 @@
             success: function (data) {
                 let code = data["code"];
                 if (code != 200) {
-                    $.alert(data["msg"]);
+                    $.toast(data["msg"]);
                     return
                 }
 
@@ -142,7 +142,13 @@
             error: function (xhr) {
                 let res = xhr.responseText;
                 let data = JSON.parse(res);
-                $.alert(data.msg)
+
+                if (data.code == -400) {
+                    $.toast("登录失效，请重新登录");
+                    go("/view/login.html", 800);
+                } else {
+                    $.toast(data.msg);
+                }
             }
         })
     }
