@@ -46,31 +46,31 @@
                     <li class="item-content">
                         <div class="item-inner">
                             <div class="item-title">昵称</div>
-                            <div class="item-after">bs13710000000</div>
+                            <div id="user-name" class="item-after"></div>
                         </div>
                     </li>
                     <li class="item-content">
                         <div class="item-inner">
                             <div class="item-title">手机号</div>
-                            <div class="item-after">13710000000</div>
+                            <div id="user-handset" class="item-after"></div>
                         </div>
                     </li>
                     <li class="item-content">
                         <div class="item-inner">
                             <div class="item-title">邮箱</div>
-                            <div class="item-after">13710000000@163.com</div>
+                            <div id="user-email" class="item-after"></div>
                         </div>
                     </li>
                     <li class="item-content">
                         <div class="item-inner">
                             <div class="item-title">性别</div>
-                            <div class="item-after">男</div>
+                            <div id="user-sex" class="item-after"></div>
                         </div>
                     </li>
                     <li class="item-content">
                         <div class="item-inner">
                             <div class="item-title">生日</div>
-                            <div class="item-after">2000-01-01</div>
+                            <div id="user-birthday" class="item-after"></div>
                         </div>
                     </li>
                 </ul>
@@ -150,5 +150,51 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/bitsync.js' charset='utf-8'></script>
 
+
+<script type="text/javascript">
+    window.onload = function () {
+        let token = localStorage.getItem("token");
+
+        if (!token) {
+            $.toast("登录失效，请重新登录");
+            go("/view/login.html", 800);
+            return
+        }
+
+        $.ajax({
+            type: "GET",
+            url: BASE_RUL + "/member/get",
+            headers: {
+                Token: token
+            },
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                let code = data["code"];
+                if (code != 200) {
+                    $.toast(data["msg"]);
+                    return
+                }
+
+                $("#user-name").html(data.response.name);
+                $("#user-handset").html(data.response.handset);
+                $("#user-email").html(data.response.email);
+                $("#user-sex").html(data.response.sex);
+                $("#user-birthday").html(data.response.birthday);
+            },
+            error: function (xhr) {
+                let res = xhr.responseText;
+                let data = JSON.parse(res);
+
+                if (data.code == -400) {
+                    $.toast("登录失效，请重新登录");
+                    go("/view/login.html", 800);
+                } else {
+                    $.toast(data.msg);
+                }
+            }
+        })
+    }
+</script>
 </body>
 </html>

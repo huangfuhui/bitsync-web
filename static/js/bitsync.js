@@ -8,16 +8,15 @@ const WS_URL = "ws://localhost:8088/market";
 var priceArr = [];
 
 /**
- * 程序睡眠一段时间
- * @param numberMillis 毫秒
- * @returns {boolean}
+ * 获取和设置token
+ * @param key
+ * @param value
  */
-function sleep(numberMillis) {
-    let now = new Date();
-    let exitTime = now.getTime() + numberMillis;
-    while (true) {
-        now = new Date();
-        if (now.getTime() > exitTime) return true;
+function token(key, value = "") {
+    if (value.length) {
+        localStorage.setItem(key, value)
+    } else {
+        localStorage.getItem(key)
     }
 }
 
@@ -26,11 +25,7 @@ function sleep(numberMillis) {
  * @param url
  * @param timeout
  */
-function go(url, timeout) {
-    if (!timeout) {
-        timeout = 2000
-    }
-
+function go(url, timeout = 2000) {
     setTimeout("location.href='" + url + "'", timeout);
 }
 

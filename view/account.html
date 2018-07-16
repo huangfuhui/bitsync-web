@@ -89,7 +89,7 @@
             <div class="list-block">
                 <ul>
                     <li>
-                        <a href="/view/personal.html" class="item-content item-link">
+                        <a href="/view/personal.html" class="item-content item-link external">
                             <div class="item-media">
                                 <svg class="icon" aria-hidden="true">
                                     <use xlink:href="#icon-portrait_mode"></use>
@@ -115,9 +115,9 @@
     window.onload = function () {
         let token = localStorage.getItem("token");
 
-        if (!token.length) {
-            $.alert("登录失效，请重新登录")
-            go("/view/login.html", 500);
+        if (!token) {
+            $.toast("登录失效，请重新登录");
+            go("/view/login.html", 800);
             return
         }
 
