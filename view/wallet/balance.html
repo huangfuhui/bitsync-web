@@ -39,13 +39,10 @@
         </header>
         <div class="content">
             <div class="content-block">
-                <div>
-                    <span>余额</span>
-                    12312
-                </div>
-                <div>预消费：45条</div>
-                <div>本月消费：290条</div>
-                <div>今日消费：30条</div>
+                <div>余额：<span id="balance"></span>条</div>
+                <div>预消费：<span id="prepare_consume"></span>条</div>
+                <div>本月消费：<span id="current_month"></span>条</div>
+                <div>今日消费：<span id="today"></span>条</div>
             </div>
         </div>
     </div>
@@ -56,5 +53,49 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/bitsync.js' charset='utf-8'></script>
 
+<script type="text/javascript">
+    window.onload = function () {
+        let token = localStorage.getItem("token");
+
+        if (!token) {
+            $.toast("登录失效，请重新登录");
+            go("/view/login.html", 800);
+            return
+        }
+
+        $.ajax({
+            type: "GET",
+            url: BASE_RUL + "/sms/wallet",
+            headers: {
+                Token: token
+            },
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                let code = data["code"];
+                if (code != 200) {
+                    $.toast(data["msg"]);
+                    return
+                }
+
+                $("#balance").html(data.response.balance);
+                $("#prepare_consume").html(data.response.prepare_consume);
+                $("#current_month").html(data.response.current_month_consume);
+                $("#today").html(data.response.today_consume);
+            },
+            error: function (xhr) {
+                let res = xhr.responseText;
+                let data = JSON.parse(res);
+
+                if (data.code == -400) {
+                    $.toast("登录失效，请重新登录");
+                    go("/view/login.html", 800);
+                } else {
+                    $.toast(data.msg);
+                }
+            }
+        })
+    }
+</script>
 </body>
 </html>
