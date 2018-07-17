@@ -56,26 +56,7 @@
 
             <div class="content-block-title">任务列表</div>
             <div class="list-block">
-                <ul>
-                    <li class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title">上涨至 34332.2332 时提醒</div>
-                            <div class="item-after"><a href="#" class="button-danger">取消</a></div>
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title">上涨至 10 时提醒</div>
-                            <div class="item-after"><a href="#" class="button-danger">取消</a></div>
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title">下跌至 8.343 时提醒</div>
-                            <div class="item-after"><a href="#" class="button-danger">取消</a></div>
-                        </div>
-                    </li>
-                </ul>
+                <ul class="task-list"></ul>
             </div>
         </div>
     </div>
@@ -87,7 +68,74 @@
 <script type='text/javascript' src='/static/js/bitsync.js' charset='utf-8'></script>
 
 <script type="text/javascript">
-    window.onload = symbol;
+    // 查询价格
+    $(symbol);
+
+    // 查询任务列表
+    $(function () {
+        let token = localStorage.getItem("token");
+        let exchangeId = parseInt(localStorage.getItem("task_exchange_id"));
+        let symbol = localStorage.getItem("task_symbol").replace("/", "_");
+
+        if (!token) {
+            $.toast("请先登录");
+            go("/view/login.html", 800);
+            return
+        }
+
+        $.ajax({
+            type: "POST",
+            url: BASE_RUL + "/task/get",
+            headers: {
+                Token: token
+            },
+            data: {
+                "type": 1,
+                "exchange_id": exchangeId,
+                "symbol_pair": symbol
+            },
+            dataType: "json",
+            success: function (data) {
+                let code = data["code"];
+                if (code != 200) {
+                    $.toast(data["msg"]);
+                    return
+                }
+
+                if (!data.response) {
+                    return;
+                }
+
+                for (let i = 0; i < data.response.length; i++) {
+                    let list = data.response[i];
+                    let deviation = '';
+                    if (list.deviation == 1) {
+                        deviation = "上涨";
+                    } else {
+                        deviation = "下跌";
+                    }
+                    let html = '<li class="item-content">\n' +
+                        '                        <div class="item-inner">\n' +
+                        '                            <div class="item-title">' + deviation + '至 ' + list.threshold_value + ' 时提醒</div>\n' +
+                        '                            <div class="item-after"><a href="#" class="button-danger cancel-task" task="' + list.id + '" task-type="' + list.type + '">取消</a></div>\n' +
+                        '                        </div>\n' +
+                        '                    </li>';
+                    $(".task-list").append(html);
+                }
+            },
+            error: function (xhr) {
+                let res = xhr.responseText;
+                let data = JSON.parse(res);
+
+                if (data.code == -400) {
+                    $.toast("登录失效，重新登录");
+                    go("/view/login.html", 800);
+                } else {
+                    $.toast(data.msg);
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>
