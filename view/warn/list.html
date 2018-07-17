@@ -21,7 +21,7 @@
                 <span class="icon icon-left"></span>
                 返回
             </a>
-            <h1 class='title'>预警</h1>
+            <h1 class='title'>行情&预警</h1>
         </header>
         <div class="content">
             <div class="card">
@@ -114,10 +114,10 @@
                     } else {
                         deviation = "下跌";
                     }
-                    let html = '<li class="item-content">\n' +
+                    let html = '<li class="item-content" id="' + list.id + '">\n' +
                         '                        <div class="item-inner">\n' +
                         '                            <div class="item-title">' + deviation + '至 ' + list.threshold_value + ' 时提醒</div>\n' +
-                        '                            <div class="item-after"><a href="#" class="button-danger cancel-task" task="' + list.id + '" task-type="' + list.type + '">取消</a></div>\n' +
+                        '                            <div class="item-after"><a href="#" class="button-danger cancel-task" task-id="' + list.id + '" task-type="' + list.type + '">取消</a></div>\n' +
                         '                        </div>\n' +
                         '                    </li>';
                     $(".task-list").append(html);
@@ -135,6 +135,56 @@
                 }
             }
         });
+    });
+
+    // 取消任务
+    $(document).on("click", ".cancel-task", function () {
+        let token = localStorage.getItem("token");
+        let taskId = parseInt($(this).attr("task-id"));
+
+        if (!token) {
+            $.toast("请先登录");
+            go("/view/login.html", 800);
+            return
+        }
+
+        $.ajax({
+            type: "POST",
+            url: BASE_RUL + "/task/cancel",
+            headers: {
+                Token: token
+            },
+            data: {
+                "task_id": taskId
+            },
+            dataType: "json",
+            success: function (data) {
+                let code = data["code"];
+                if (code != 200) {
+                    $.toast(data["msg"]);
+                    return
+                }
+
+                $("#" + taskId).remove();
+                $.toast("取消成功");
+            },
+            error: function (xhr) {
+                let res = xhr.responseText;
+                let data = JSON.parse(res);
+
+                if (data.code == -400) {
+                    $.toast("登录失效，重新登录");
+                    go("/view/login.html", 800);
+                } else {
+                    $.toast(data.msg);
+                }
+            }
+        });
+    });
+
+    // 新建任务
+    $(document).on("click", "#add-task", function () {
+
     });
 </script>
 </body>
