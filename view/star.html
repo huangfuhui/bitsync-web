@@ -104,11 +104,12 @@
 
                 for (let i = 0; i < res.length; i++) {
                     let task = res[i];
+                    let symbol = task.symbol_pair.replace("_", "/");
                     $("#task-list").append('<li>\n' +
-                        '                        <a href="#" class="task item-link item-content" exchange="' + task.exchange_id + '" symbol="' + task.symbol_pair + '">\n' +
+                        '                        <a href="#" class="task item-link item-content" exchange="' + task.exchange_id + '" symbol="' + symbol + '">\n' +
                         '                            <div class="item-inner">\n' +
                         '                                <div class="item-title-row">\n' +
-                        '                                    <div class="item-title">' + task.symbol_pair + '</div>\n' +
+                        '                                    <div class="item-title">' + symbol + '</div>\n' +
                         '                                    <div class="item-after">17.99</div>\n' +
                         '                                </div>\n' +
                         '                                <div class="item-subtitle">' + task.exchange_name + '</div>\n' +

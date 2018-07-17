@@ -2,10 +2,16 @@
  * 基础js文件
  */
 
-const BASE_RUL = "http://localhost:8080";
+const BASE_RUL = "http://localhost:8090";
 const WS_URL = "ws://localhost:8088";
 
 var priceArr = [];
+
+// 交易所名称
+const EXCHANGE = {
+    1: "火币网",
+    2: "龙交所"
+};
 
 /**
  * 设置键值
@@ -37,7 +43,7 @@ function del(key) {
  * @param url
  * @param timeout
  */
-function go(url, timeout = 2000) {
+function go(url, timeout) {
     setTimeout("location.href='" + url + "'", timeout);
 }
 
@@ -119,11 +125,10 @@ function market() {
 function symbol() {
     let con = new WebSocket(WS_URL + "/symbol");
 
-    let exchangeId = get("task_exchange_id");
-    let exchange_name = get("task_exchange_name");
-    let symbol = get("task_symbol");
+    let exchangeId = parseInt(localStorage.getItem("task_exchange_id"));
+    let symbol = localStorage.getItem("task_symbol");
 
-    $("#exchange-name").html(exchange_name);
+    $("#exchange-name").html(EXCHANGE[exchangeId]);
     $("#symbol").html(symbol);
 
     con.onopen = function () {
