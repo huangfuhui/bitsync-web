@@ -25,12 +25,12 @@
         </header>
         <div class="content">
             <div class="card">
-                <div class="card-header">huobi</div>
+                <div class="card-header" id="exchange-name"></div>
 
                 <div class="card-content">
                     <div class="card-content-inner row">
-                        <div class="col-80">eos/usdt</div>
-                        <div class="col-20">12.33</div>
+                        <div class="col-80" id="symbol"></div>
+                        <div class="col-20" id="price"></div>
                     </div>
 
                     <div class="list-block">
@@ -86,5 +86,8 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/js/bitsync.js' charset='utf-8'></script>
 
+<script type="text/javascript">
+    window.onload = symbol;
+</script>
 </body>
 </html>

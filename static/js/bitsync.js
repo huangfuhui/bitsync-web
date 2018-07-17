@@ -3,21 +3,33 @@
  */
 
 const BASE_RUL = "http://localhost:8080";
-const WS_URL = "ws://localhost:8088/market";
+const WS_URL = "ws://localhost:8088";
 
 var priceArr = [];
 
 /**
- * 获取和设置token
+ * 设置键值
  * @param key
  * @param value
  */
-function token(key, value = "") {
-    if (value.length) {
-        localStorage.setItem(key, value)
-    } else {
-        localStorage.getItem(key)
-    }
+function set(key, value) {
+    localStorage.setItem(key, value);
+}
+
+/**
+ * 获取键值
+ * @param key
+ */
+function get(key) {
+    localStorage.getItem(key);
+}
+
+/**
+ * 删除键
+ * @param key
+ */
+function del(key) {
+    localStorage.removeItem(key);
 }
 
 /**
@@ -34,7 +46,7 @@ function go(url, timeout = 2000) {
  */
 function market() {
     let initList = false;
-    let con = new WebSocket(WS_URL);
+    let con = new WebSocket(WS_URL + "/market");
 
     con.onopen = function () {
         console.log("建立连接");
@@ -94,6 +106,51 @@ function market() {
                 }
             }
         }
+    };
+    con.onerror = function () {
+        console.log("发生错误");
+        con.close();
+    };
+}
+
+/**
+ * 查询交易对价格
+ */
+function symbol() {
+    let con = new WebSocket(WS_URL + "/symbol");
+
+    let exchangeId = get("task_exchange_id");
+    let exchange_name = get("task_exchange_name");
+    let symbol = get("task_symbol");
+
+    $("#exchange-name").html(exchange_name);
+    $("#symbol").html(symbol);
+
+    con.onopen = function () {
+        console.log("建立连接");
+        con.send(JSON.stringify({"exchange_id": exchangeId, "symbol": symbol}));
+
+        // 等待300毫秒再请求数据
+        window.setInterval(function () {
+            con.send(JSON.stringify({"exchange_id": exchangeId, "symbol": symbol}));
+        }, 300);
+    };
+    con.onclose = function () {
+        console.log("关闭连接");
+        $.toast("连接走丢了，点击刷新找回吧");
+    };
+    con.onmessage = function (evt) {
+        let res = JSON.parse(evt.data);
+        let data = res.response;
+
+        if (res.code != 200) {
+            con.close();
+            $.toast("服务器开小差了");
+            return;
+        }
+
+        // 更新数据
+        $("#price").html(data[0].price);
     };
     con.onerror = function () {
         console.log("发生错误");
