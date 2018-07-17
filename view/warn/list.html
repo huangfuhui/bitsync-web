@@ -38,15 +38,15 @@
                             <li class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title">上涨至</div>
-                                    <div><input type="text" name="" placeholder="价格"></div>
-                                    <div><a href="#" class="button">添加</a></div>
+                                    <div><input type="text" id="up" placeholder="价格"></div>
+                                    <div><a href="#" class="button add-task" deviation="1">添加</a></div>
                                 </div>
                             </li>
                             <li class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title">下跌至</div>
-                                    <div><input type="text" name="" placeholder="价格"></div>
-                                    <div><a href="#" class="button">添加</a></div>
+                                    <div><input type="text" id="down" placeholder="价格"></div>
+                                    <div><a href="#" class="button add-task" deviation="2">添加</a></div>
                                 </div>
                             </li>
                         </ul>
@@ -183,8 +183,88 @@
     });
 
     // 新建任务
-    $(document).on("click", "#add-task", function () {
+    $(document).on("click", ".add-task", function () {
+        let token = localStorage.getItem("token");
+        let exchangeId = parseInt(localStorage.getItem("task_exchange_id"));
+        let symbol = localStorage.getItem("task_symbol").replace("/", "_");
+        let deviation = parseInt($(this).attr("deviation"));
+        let value = 0;
 
+        if (!token) {
+            $.toast("请先登录");
+            go("/view/login.html", 800);
+            return
+        }
+
+        // 判断任务价格是否合理
+        let price = $("price").val();
+        let deviationTag = "上涨";
+        if (deviation == 1) {
+            value = $("#up").val();
+            if (!value) {
+                $.toast("请填写价格");
+                return
+            } else if (price >= value) {
+                $.toast("不能小于等于当前价格");
+                return
+            }
+        } else {
+            value = $("#down").val();
+            if (!value) {
+                $.toast("请填写价格");
+                return
+            } else if (price <= value) {
+                $.toast("不能大于等于当前价格");
+                return
+            }
+            deviationTag = "下跌";
+        }
+
+        $.ajax({
+            type: "POST",
+            url: BASE_RUL + "/task/add",
+            headers: {
+                Token: token
+            },
+            data: {
+                "type": 1,
+                "exchange_id": exchangeId,
+                "symbol_pair": symbol,
+                "deviation": deviation,
+                "value": value
+            },
+            dataType: "json",
+            success: function (data) {
+                let code = data["code"];
+                if (code != 200) {
+                    $.toast(data["msg"]);
+                    return
+                }
+
+                let html = '<li class="item-content" id="' + data["response"]["task_id"] + '">\n' +
+                    '                        <div class="item-inner">\n' +
+                    '                            <div class="item-title">' + deviationTag + '至 ' + value + ' 时提醒</div>\n' +
+                    '                            <div class="item-after"><a href="#" class="button-danger cancel-task" task-id="' + data["response"]["task_id"] + '" task-type="1">取消</a></div>\n' +
+                    '                        </div>\n' +
+                    '                    </li>';
+                $(".task-list").append(html);
+
+                $.toast("添加成功");
+                $("#up").val("");
+                $("#down").val("");
+            },
+            error: function (xhr) {
+                let res = xhr.responseText;
+                let data = JSON.parse(res);
+
+                if (data.code == -400) {
+                    $.toast("登录失效，重新登录");
+                    go("/view/login.html", 800);
+                } else {
+                    $.toast(data.msg);
+                }
+            }
+        });
     });
 </script>
 </body>
