@@ -123,6 +123,13 @@ function market() {
  * 查询交易对价格
  */
 function symbol() {
+    let token = localStorage.getItem("token");
+    if (!token) {
+        $.toast("请先登录");
+        go("/view/login.html", 800);
+        return
+    }
+    
     let con = new WebSocket(WS_URL + "/symbol");
 
     let exchangeId = parseInt(localStorage.getItem("task_exchange_id"));
