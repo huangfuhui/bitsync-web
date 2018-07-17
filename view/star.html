@@ -98,10 +98,14 @@
 
                 let res = data.response;
 
-                for (i = 0; i < res.length; i++) {
+                if (!res) {
+                    return;
+                }
+
+                for (let i = 0; i < res.length; i++) {
                     let task = res[i];
                     $("#task-list").append('<li>\n' +
-                        '                        <a href="#" class="item-link item-content">\n' +
+                        '                        <a href="#" class="task item-link item-content" exchange="' + task.exchange_id + '" symbol="' + task.symbol_pair + '">\n' +
                         '                            <div class="item-inner">\n' +
                         '                                <div class="item-title-row">\n' +
                         '                                    <div class="item-title">' + task.symbol_pair + '</div>\n' +
@@ -126,7 +130,15 @@
                 }
             }
         })
-    }
+    };
+
+    // 任务详情
+    $(document).on("click", ".task", function () {
+        set("task_exchange_id", $(this).attr("exchange"));
+        set("task_symbol", $(this).attr("symbol"));
+
+        window.location.href = "/view/warn/list.html"
+    });
 </script>
 </body>
 </html>
